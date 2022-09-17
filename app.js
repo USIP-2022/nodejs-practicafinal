@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const productRouter = require("./routes/productRoutes");
+const userRouter = require("./routes/userRoutes");
 const MyError = require("./utils/MyError");
 
 const app = express();
@@ -13,7 +14,16 @@ app.use((req, res, next) => {
     next();
 });
 
+//routes
+// Products
+app.use("/api/v1/products/", productRouter);
+//Users
+app.use("/api/v1/users/", userRouter);
+
 //manejo de errores
+app.all("*", (req, res, next) => {
+    next(new MyError("route not found", 404));
+});
 app.use((err, req, res, next) => {
     //console.log("error:", err); //reeemplazar por guardado en archivo o en bd
     if (process.env.NODE_ENV === "development") {
@@ -39,8 +49,7 @@ app.use((err, req, res, next) => {
     }
 });
 
-//routes
-app.use("/api/v1/products/", productRouter);
+
 
 module.exports = app;
 
