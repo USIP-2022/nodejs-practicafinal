@@ -1,4 +1,4 @@
-const User = require("../models/Cart");
+const Cart = require("../models/Cart");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getAllCart = catchAsync(async (req, res) => {
