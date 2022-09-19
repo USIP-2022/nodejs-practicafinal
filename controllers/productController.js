@@ -40,3 +40,28 @@ exports.getProductById = catchAsync(async (req, res) => {
         });
     }
 });
+
+exports.updateProduct = catchAsync(async (req, res) => {
+    const id = req.params.id
+    const body = req.body
+    const updateProduct = await Product.findOneAndUpdate(id, body)
+
+    res.status(200).json({
+        status: "Update Product",
+        data: {
+            product: updateProduct
+        },
+    });
+});
+exports.deleteProduct = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+    const deleteProduct = await Product.findOneAndDelete(id)
+
+    res.status(200).json({
+        status: "deleted Product",
+        data: {
+            product: deleteProduct,
+        },
+    });
+});
