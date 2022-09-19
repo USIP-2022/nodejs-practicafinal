@@ -18,3 +18,59 @@ exports.addUser = catchAsync(async (req, res) => {
         },
     });
 });
+
+
+exports.getAllusers = catchAsync(async (req, res) => {
+    const users = await User.find();
+
+    res.status(200).json({
+        status: "success",
+        timeOfRequest: req.requestTime,
+        results: users.length,
+        data: {
+            users,
+        },
+    });
+});
+
+exports.getUserById = catchAsync(async (req, res) => {
+    const foundUser = await User.findById(req.params.id);
+    if (foundUser) {
+        res.status(200).json({
+            status: "success",
+            data: {
+                user:foundUser,
+            },
+        });
+    } else {
+        res.status(404).json({
+            status: "not found",
+        });
+    }
+});
+
+exports.updateUser = catchAsync(async (req, res) => {
+    const id = req.params.id
+    const body = req.body
+    const updateUser = await User.findOneAndUpdate(id, body)
+
+    res.status(200).json({
+        status: "Update user",
+        data: {
+            user:updateUser
+        },
+    });
+});
+
+exports.deleteUser = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+    const deleteUser = await User.findOneAndDelete(id)
+
+    res.status(200).json({
+        status: "Delete user",
+        data: {
+            user: deleteUser
+        },
+    });
+});
